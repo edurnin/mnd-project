@@ -8,20 +8,19 @@ import weightQuestionMapping from './data/weightQuestionMapping'; // Import Zari
 import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; // Import Zarit question mapping array
 import './PatientSearch.css';
 
-const PatientSearch = () => {
+const PatientSearch = ({ patients }) => {
   const [responseContainer, setResponseContainer] = useState('');
   const [patientId, setPatientId] = useState('');
   const [patientName, setPatientName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-
-    fetch('patientNames.json')
-      .then(response => response.json())
-      .then(patientData => {
-        const patient = patientData.find(patient => patient["First Name"].toLowerCase() === firstName.toLowerCase() && patient["Last Name"].toLowerCase() === lastName.toLowerCase());
+    const patient = patients.find(patient => patient["First Name"].toLowerCase() === firstName.toLowerCase() && patient["Last Name"].toLowerCase() === lastName.toLowerCase());
         if (patient) {
           setPatientId(patient.ID);
           displayPatientInfo(`${patient["First Name"]} ${patient["Last Name"]}`, `${patient["ID"]}`);
@@ -29,11 +28,6 @@ const PatientSearch = () => {
         } else {
           setResponseContainer('Patient not found.');
         }
-      })
-      .catch(error => {
-        console.error('Error fetching patient names JSON file:', error);
-        setResponseContainer('Error fetching patient names JSON file.');
-      });
   };
 
   const displayPatientInfo = (name, ID) => {
@@ -45,7 +39,15 @@ const PatientSearch = () => {
     fetch('questionResponses.json')
       .then(response => response.json())
       .then(data => {
-        const patientResponses = data.filter(response => response.group === patientId);
+        let patientResponses = data.filter(response => response.group === patientId);
+        if (startDate && endDate) {
+          const start = new Date(startDate);
+          const end = new Date(endDate);
+          patientResponses = patientResponses.filter(response => {
+            const createdDate = new Date(response.group_series_5);
+            return createdDate >= start && createdDate <= end;
+          });
+        }
         displayPatientResponses(patientResponses);
       })
       .catch(error => {
@@ -127,6 +129,12 @@ const PatientSearch = () => {
         <input type="text" id="first-name" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
         <input type="text" id="last-name" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
         <button type="submit">Search</button>
+      </form>
+      <form id="dateRangeForm">
+        <label htmlFor="start">Start date:</label>
+        <input type="date" id="start" name="start" value={startDate} onChange={e => setStartDate(e.target.value)} />
+        <label htmlFor="end">End date:</label>
+        <input type="date" id="end" name="end" value={endDate} onChange={e => setEndDate(e.target.value)} />
       </form>
       <div id="response-container" dangerouslySetInnerHTML={{ __html: responseContainer }}></div>
     </div>
