@@ -1,11 +1,28 @@
+.container {
+display: flex;
+justify-content: space-between;
+}
+
+.search {
+    border: 1px solid black;
+    padding: 10px;
+  }
+
+.searchAndNames{
+width: 40%;
+overflow-y: auto;
+}
+
 /* Container styling */
 #response-container {
-    display: inline-block; /* Adjust container width based on content */
+    float: right;
+    width: 55%; 
+    /* text-align: right;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
 }
 
 /* Response item styling */
@@ -29,11 +46,11 @@
 }
 
 .response ul li {
-    list-style-type: none;
     margin-left: 15px;
 }
 
-/* Additional styling for headers */
+
+/* Additional styling  */
 h2 {
     font-size: 1.2em;
     color: #333;
@@ -41,4 +58,34 @@ h2 {
 
 strong {
     color: #007bff;
+}
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid black; /* Add border to the table */
+}
+
+table th {
+  border: 1px solid black; /* Add border to table cells */
+  padding: 8px;
+  text-align: left;
+}
+
+table td {
+    padding: 8px;
+    text-align: left;
+  }
+
+table th {
+  background-color: #f2f2f2;
+}
+
+.patient-name {
+    cursor: pointer;
+  }
+
+.table-cell:hover {
+background-color: #ddd; /* Change this to your preferred color */
 }

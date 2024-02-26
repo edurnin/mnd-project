@@ -3,13 +3,15 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import Home from './components/Home';
-import PatientSearch from './components/patientSearch';
+// import PatientSearch from './components/PatientSearch';
 import PatientPage from './components/PatientPage';
+import PatientList from './components/PatientList';
 
 
 const navLinks = [
-  { to: "/PatientSearch", label: "PatientSearch" },
   {to: "/", label: "Home" },
+  {to: "/patientlist", label: "Patient List" }
+
 ];
 
 function App() {
@@ -19,8 +21,8 @@ function App() {
         <Navbar navLinks={navLinks} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/PatientSearch" element={<PatientSearch />} />
-          <Route path="/patient/:patientId" element={<PatientPage />} />
+          <Route path="/patientlist" element={<PatientList />} />
+          <Route path="/patient/:patient.ID" element={<PatientPage />} />
         </Routes>
       </Router>
     </div>

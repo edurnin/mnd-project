@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import PatientSearch from './patientSearch';
+import PatientSearch from './PatientSearch';
 
 const Home = () => {
-  const [patients, setPatients] = useState([]);
+  const [patientNamesandIDs, setPatients] = useState([]);
 
   useEffect(() => {
     fetch('patientNames.json')
@@ -19,13 +19,8 @@ const Home = () => {
   return (
     <div>
       <ul>
-        {patients.map(patient => (
-          <li key={patient.ID}>
-            {patient["First Name"]} {patient["Last Name"]}
-          </li>
-        ))}
+      <PatientSearch patientNamesandIDs={patientNamesandIDs} />
       </ul>
-      <PatientSearch patients={patients} />
     </div>
   );
 };
