@@ -9,11 +9,39 @@ justify-content: space-between;
   }
 
 .searchAndNames{
-width: 40%;
+width: 30%;
 overflow-y: auto;
 }
 
-/* Container styling */
+.responses {
+  float: right;
+    width: 65%; 
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#dateRangeForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#dateRangeForm label,
+#dateRangeForm input {
+  margin: 5px;
+}
+
+#questionnaireFilter label,
+#questionnaireFilter input {
+  margin: 5px;
+}
+
+/* 
 #response-container {
     float: right;
     width: 55%; 
@@ -22,8 +50,8 @@ overflow-y: auto;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    margin-bottom: 20px; */
-}
+    margin-bottom: 20px; 
+} */
 
 /* Response item styling */
 .response {
