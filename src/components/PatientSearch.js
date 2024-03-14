@@ -17,7 +17,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState(''); // New state variable for selected questionnaire
-  const [allResponses, setAllResponses] = useState([]); // New state variable for all responses
+  const [searchTerm, setSearchTerm] = useState(''); // New state variable for search term
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -76,16 +76,25 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     if (data.length === 0) {
       responseContent = '<p>No questionnaires found.</p>';
     } else {
+
+      let nextResponseValues = null;
+
+      data = data.filter(item => item.group_series_7 === 'scored');
       data.sort((a, b) => new Date(b.group_series_5) - new Date(a.group_series_5));
-      data.forEach(response => {
+      for (let i = 0; i < data.length; i++) {
+        const response = data[i];        
         if (response.group_series_7 !== 'scored') {
-          return;
+          continue;
         }
   
         const questionMapping = getQuestionMapping(response.group_series_2);
   
         const responseValues = response.group_series_12.split('|').map(value => parseInt(value, 10)+1);
-  
+       
+        if (i < data.length - 1 && selectedQuestionnaire) {
+          nextResponseValues = data[i + 1].group_series_12.split('|').map(value => parseInt(value, 10)+1);
+        }
+        
         const questionDescriptions = responseValues.map((value, index) => {
           const mapping = questionMapping[index];
           if (value){
@@ -101,9 +110,13 @@ const PatientSearch = ({ patientNamesandIDs }) => {
             } else {
               description = mapping[value];
             }
+            const highlight = selectedQuestionnaire && nextResponseValues && (value !== nextResponseValues[index]);
+            const answerClass = highlight ? 'highlight' : '';
+
             return {
               question: (index+1) +': ' + question,
-              answer: description ? description +'..................'+ value : 'n/a..................' + value
+              answer: `<span class="${answerClass}">${description ? description +'..................'+ value + "-----"+  (nextResponseValues ? nextResponseValues[index] : '') : 'n/a..................' + value}</span>`,
+              highlight
             };
           }
           else{
@@ -113,7 +126,6 @@ const PatientSearch = ({ patientNamesandIDs }) => {
 
         const tableString = questionDescriptions.map(({ question, answer }) => `<tr><td>${question}</td><td>${answer}</td></tr>`).join('');
 
-  
         responseContent += `
           <div class="response">
             <p><strong>${response.group_series_2}</strong></p>
@@ -129,7 +141,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
             <br>
           </div>
         `;
-      });
+      };
     }
   
     setResponseContainer(responseContainer => responseContainer + responseContent);
@@ -172,23 +184,34 @@ const PatientSearch = ({ patientNamesandIDs }) => {
       <div className='searchAndNames' >
         <div className='search'>
           <form id="search-form" onSubmit={handleFormSubmit}>
-            <input type="text" id="first-name" placeholder="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-            <input type="text" id="last-name" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-            <button type="submit">Search</button>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            placeholder="Search patients"
+          />            
+          {/* <input type="text" id="last-name" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} /> */}
+          <button type="submit">Search</button>
           </form>
           <br></br>
         </div>
         <br></br>
         <ul className='patient-list'>
-          {patientNamesandIDs.map(patient => (
+        {patientNamesandIDs
+          .filter(patient => 
+            `${patient["First Name"]} ${patient["Last Name"]}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+          )
+          .map(patient => (
             <li key={patient.ID} onClick={() => handlePatientClick(patient)}>
               <table>
                 <tbody>
                   <tr>
-                    <td className='table-cell'>{patient["First Name"] }{" "}{ patient["Last Name"]}</td>
+                    <td className='table-cell'>{patient["First Name"]}{" "}{patient["Last Name"]}</td>
                   </tr>
                 </tbody>
-              </table>            
+              </table>
             </li>
           ))}
         </ul>

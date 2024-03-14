@@ -4,9 +4,9 @@ justify-content: space-between;
 }
 
 .search {
-    border: 1px solid black;
-    padding: 10px;
-  }
+  border: 1px solid black;
+  padding: 10px;
+}
 
 .searchAndNames{
 width: 30%;
@@ -15,7 +15,11 @@ overflow-y: auto;
 
 .responses {
   float: right;
-    width: 65%; 
+  width: 65%; 
+}
+
+.highlight {
+  color: red;
 }
 
 .filters {
@@ -63,6 +67,11 @@ overflow-y: auto;
     font-size: 0.9em;
     margin-right: 10px; /* Add some margin between response items */
     margin-bottom: 10px; /* Add some margin between response items */
+}
+.response-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(1000px, 1fr)); /* Adjust the 200px to fit your needs */
+  grid-gap: 10px; /* Adjust the grid-gap to fit your needs */
 }
 
 .response p {
