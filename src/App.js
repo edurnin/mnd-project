@@ -1,17 +1,16 @@
-import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/NavBar';
 import Home from './components/Home';
 // import PatientSearch from './components/PatientSearch';
-import PatientPage from './components/PatientPage';
-import PatientList from './components/PatientList';
-
+import Clinic from './components/Clinic';
+import Carers from './components/Carers';
 
 const navLinks = [
   {to: "/", label: "Home" },
-  {to: "/patientlist", label: "Patient List" }
-
+  {to: "/clinic", label: "Clinic" },
+  {to: "/carers", label: "Carers" }
 ];
 
 function App() {
@@ -21,8 +20,8 @@ function App() {
         <Navbar navLinks={navLinks} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/patientlist" element={<PatientList />} />
-          <Route path="/patient/:patient.ID" element={<PatientPage />} />
+          <Route path="/clinic" element={<Clinic />} />
+          <Route path="/carers" element={<Carers />} />
         </Routes>
       </Router>
     </div>

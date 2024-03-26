@@ -1,12 +1,7 @@
-// components/PatientSearch.js
+// components/CarerSearch.js
 
 import React, { useState, useEffect } from 'react';
-import mcsiQuestionMapping from './data/mcsiQuestionMapping'; // Import MCSI question mapping array
-import zaritQuestionMapping from './data/zaritQuestionMapping'; // Import Zarit question mapping array
-import alsfrsrQuestionMapping from './data/alsfrsrQuestionMapping'; // Import Zarit question mapping array
-import weightQuestionMapping from './data/weightQuestionMapping'; // Import Zarit question mapping array
-import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; // Import Zarit question mapping array
-import carerQuestionMapping from './data/carerQuestionMapping'; // Import Zarit question mapping array
+import carerQuestionMapping from './data/carerQuestionMapping';
 import './PatientSearch.css';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart } from 'chart.js';
@@ -14,7 +9,7 @@ import { ArcElement, CategoryScale, Decimation, Filler, Legend, Title, Tooltip, 
 import { Line } from 'react-chartjs-2'; // Import Line from react-chartjs-2
 
 Chart.register(ArcElement, CategoryScale, Decimation, Filler, Legend, Title, Tooltip, LinearScale, PointElement, LineElement);
-const PatientSearch = ({ patientNamesandIDs }) => {
+const CarerSearch = ({ patientNamesandIDs }) => {
   const [responseContainer, setResponseContainer] = useState('');
   const [patientId, setPatientId] = useState('');
   const [name, setPatientName] = useState('');
@@ -22,14 +17,13 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   // const [lastName, setLastName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [selectedQuestionnaire, setSelectedQuestionnaire] = useState(''); // New state variable for selected questionnaire
   const [searchTerm, setSearchTerm] = useState(''); // New state variable for search term
   // const [patientResponses, setPatientResponses] = useState([]);
-  const [percentageScored, setPercentageScored] = useState(0);
+  const [percentageCompleted, setPercentageCompleted] = useState(0);
   const [engagementPerYear, setEngagementPerYear] = useState([]);
   const [areChartsVisible, setChartsVisible] = useState(false);
   const [total, setTotal] = useState(0);
-  const [scored, setScored] = useState(0);
+  const [completed, setCompleted] = useState(0);
 
 
   const handlePatientClick = (patient) => {
@@ -38,7 +32,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     setPatientName(`${patient["First Name"]} ${patient["Last Name"]}`)
     setChartsVisible(true);
     // displayPatientInfo(name, patient.ID);
-    // fetchQuestionnaireResponses(patient.ID, selectedQuestionnaire); // Pass selected questionnaire type to fetch function
+    // fetchQuestionnaireResponses(patient.ID); // Pass selected questionnaire type to fetch function
   };
 
   useEffect(() => {
@@ -46,23 +40,23 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     setResponseContainer('');
     // Fetch new responses if a patient is selected
     if (patientId) {
-      fetchQuestionnaireResponses(patientId, selectedQuestionnaire);
+      fetchQuestionnaireResponses(patientId);
     }
-  }, [selectedQuestionnaire, patientId, startDate, endDate, name,percentageScored]); // Add selectedQuestionnaire and patientId as dependencies
+  }, [patientId, startDate, endDate, name,percentageCompleted]);
 
 
-  const countScoredQuestionnaires = (responses) => {
+  const countCompletedQuestionnaires = (responses) => {
     let total = 0;
-    let scored = 0;
+    let completed = 0;
   
     responses.forEach(response => {
       total++;
-      if (response.group_series_7 === 'scored' || response.group_series_7 === 'complete') {
-        scored++;
+      if (response.group_series_7 === 'complete') {
+        completed++;
       }
     });
   
-    return { total, scored };
+    return { total, completed };
   };
 
   const fetchQuestionnaireResponses = (patientId) => {
@@ -71,9 +65,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
       .then(data => {
         let patientResponses = data.filter(response => response.group === patientId);
   
-        if (selectedQuestionnaire) {
-          patientResponses = patientResponses.filter(response => response.group_series_2 === selectedQuestionnaire);
-        }
+        patientResponses = patientResponses.filter(response => response.group_series_2 === 'Carer Support');
   
         if (startDate && endDate) {
           const start = new Date(startDate);
@@ -97,16 +89,16 @@ const PatientSearch = ({ patientNamesandIDs }) => {
 
         // Then, calculate total engagement for each year
         setEngagementPerYear(Object.entries(responsesByYear).map(([year, responses]) => {
-          const { total, scored } = countScoredQuestionnaires(responses);
-          const engagement = ((scored / total) * 100).toFixed(1);
+          const { total, completed } = countCompletedQuestionnaires(responses);
+          const engagement = ((completed / total) * 100).toFixed(1);
           return { year, engagement };
         }));
         
         // Then, calculate total engagement for each year
-        const { total, scored } = countScoredQuestionnaires(patientResponses);
+        const { total, completed } = countCompletedQuestionnaires(patientResponses);
         setTotal(total);
-        setScored(scored);
-        setPercentageScored(((scored / total) * 100).toFixed(1));    
+        setCompleted(completed);
+        setPercentageCompleted(((completed / total) * 100).toFixed(1));    
         displayPatientResponses(patientResponses);
         
       })
@@ -118,9 +110,8 @@ const PatientSearch = ({ patientNamesandIDs }) => {
 
   const displayPatientResponses = (data) => {
     // console.log(name);
-    // console.log(`Percentage of scored questionnaires: ${percentageScored}%`);
+    // console.log(`Percentage of Completed questionnaires: ${percentageCompleted}%`);
 
-    // setResponseContainer(`<h2>Responses for <blue> ${name}</blue> </h2>` + (selectedQuestionnaire ? `<h3>Questionnaire: <blue>${selectedQuestionnaire}</blue></h3>` : '') + percentageScored + `% of ${selectedQuestionnaire} questionnaires scored` + '<br>'+ '<br>');
     let responseContent = '';
 
     if (data.length === 0) {
@@ -129,31 +120,23 @@ const PatientSearch = ({ patientNamesandIDs }) => {
 
       let nextResponseValues = null;
 
-      data = data.filter(item => item.group_series_7 === 'scored' || item.group_series_7 === 'complete');
+      data = data.filter(item => item.group_series_7 === 'completed');
       data.sort((a, b) => new Date(b.group_series_5) - new Date(a.group_series_5));
       for (let i = 0; i < data.length; i++) {
         const response = data[i];
-        if (response.group_series_7 !== 'scored' && response.group_series_7 !== 'complete') {
+        if (response.group_series_7 !== 'completed') {
           continue;
         }
 
-        const questionMapping = getQuestionMapping(response.group_series_2);
+        const questionMapping = carerQuestionMapping;
 
         const responseValues = response.group_series_12.split('|').map(value => parseInt(value, 10) + 1);
 
-        if (i < data.length - 1 && selectedQuestionnaire) {
+        if (i < data.length - 1 ) {
           nextResponseValues = data[i + 1].group_series_12.split('|').map(value => parseInt(value, 10) + 1);
         }
 
         const questionDescriptions = responseValues.map((value, index) => {
-          let score;
-          if (index + 1 === 15) {
-            // Special scoring for question 15
-            const score15Mapping = [4, 3, 3, 2, 2, 2, 1, 0];
-            score = score15Mapping[value-1];
-          } else {
-            score = (index + 1 === 5 || (index + 1 >= 14 && index + 1 < 15) || (index + 1 > 15 && index + 1 <= 23)) ? 'Not scored' : 4 - parseInt(value-1, 10);
-          }
 
           const mapping = questionMapping[index];
           if (value) {
@@ -162,16 +145,16 @@ const PatientSearch = ({ patientNamesandIDs }) => {
             }
             const question = mapping[0];
             let description;
-            if (questionMapping === alsfrsrQuestionMapping && index + 1 === 17) {
-              // Handle multiple selections
-              value = value - 1;
-              description = Array.from(String(value), Number).map(digit => mapping[digit + 1]).join(', ');
-            } else {
+            // if (questionMapping === alsfrsrQuestionMapping && index + 1 === 17) {
+            //   // Handle multiple selections
+            //   value = value - 1;
+            //   description = Array.from(String(value), Number).map(digit => mapping[digit + 1]).join(', ');
+            // } else {
               description = mapping[value];
-            }
+            // }
 
             let highlight = 0;
-            if (selectedQuestionnaire && nextResponseValues) {
+            if (nextResponseValues) {
               highlight = value > nextResponseValues[index] ? 1 : value < nextResponseValues[index] ? -1 : 0;
             }
             const answerClass = highlight === 1 ? 'highlight-red' : highlight === -1 ? 'highlight-green' : '';
@@ -181,7 +164,6 @@ const PatientSearch = ({ patientNamesandIDs }) => {
               question: (index + 1) + ': ' + question,
               answer: `<span class="${answerClass}">${description ? description  : 'n/a'}</span>`,
               highlight,
-              score,
             };
           }
           else {
@@ -189,101 +171,22 @@ const PatientSearch = ({ patientNamesandIDs }) => {
           }
         }).filter(item => item !== undefined);
 
-        const tableString = questionDescriptions.map(({ question, answer, score }) => {
-          if (response.group_series_2 === 'ALS-FRS-R') {
-            return `<tr><td>${question}</td><td>${answer}</td><td>${score}</td></tr>`;
-          } else {
-            return `<tr><td>${question}</td><td>${answer}</td></tr>`;
-          }
-        }).join('');
-        
+        const tableString = questionDescriptions.map(({ question, answer }) => `<tr><td>${question}</td><td>${answer}</td></tr>`).join('');
+
         responseContent += `
           <div class="response">
             <div class="response-header">
               <p><strong>${response.group_series_2}</strong></p>
               <p> ${formatDate(response.group_series_6)}</p>
             </div>
+            <table>${tableString}</table>
+            <br>
+          </div>
         `;
-
-        if (response.group_series_2 === 'ALS-FRS-R') {
-          const totalScore = questionDescriptions.reduce((total, { score }) => {
-            if (typeof score === 'number') {
-              return total + score;
-            }
-            return total;
-          }, 0);
-
-          const bulbarScore = questionDescriptions.slice(0, 3).reduce((total, { score }) => {
-            if (typeof score === 'number') {
-              return total + score;
-            }
-            return total;
-          }, 0);
-
-          const armsScore = questionDescriptions.slice(3, 7).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
-            if (typeof score === 'number') {
-              return total + score;
-            }
-            return total;
-          }, 0);
-
-          const legsScore = questionDescriptions.slice(7, 10).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
-            if (typeof score === 'number') {
-              return total + score;
-            }
-            return total;
-          }, 0);
-
-          const respScore = questionDescriptions.slice(10, 14).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
-            if (typeof score === 'number') {
-              return total + score;
-            }
-            return total;
-          }, 0);
-
-          responseContent += `
-            <div class = "scores" >
-              <p><blue>Total Score: </blue>${totalScore}</p>
-              <p><blue>Bulbar Score:</blue> ${bulbarScore}</p>
-              <p><blue>Arms Score:</blue> ${armsScore}</p>
-              <p><blue>Legs Score:</blue> ${legsScore}</p>
-              <p><blue>Resp Score:</blue> ${respScore}</p>
-            </div>
-          `;
-        }
-
-        responseContent += `
-        <table>${tableString}</table>
-        <br>
-      </div>
-    `;
-        
       };
     }
 
     setResponseContainer(responseContainer => responseContainer + responseContent);
-  };
-
-  const getQuestionMapping = (questionnaireType) => {
-    switch (questionnaireType) {
-      case 'MCSI':
-        return mcsiQuestionMapping;
-      case 'Zarit-12':
-        return zaritQuestionMapping;
-      case 'ALS-FRS-R':
-        return alsfrsrQuestionMapping;
-      case 'Weight':
-        return weightQuestionMapping;
-      case 'Speech and Swallow,':
-        return speechAndSwallowQuestionMapping;
-      case 'Carer Support':
-        return carerQuestionMapping;
-      default:
-        return {};
-    }
   };
 
   const formatDate = (dateString) => {
@@ -296,7 +199,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     datasets: [
       {
         label: 'Engagement:',
-        data: [percentageScored, 100 - percentageScored],
+        data: [percentageCompleted, 100 - percentageCompleted],
         backgroundColor: ['blue', 'grey'],
       }
     ]
@@ -306,7 +209,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     plugins: {
       title: {
         display: true,
-        text: 'Overall' + selectedQuestionnaire+' engagement for ' + name+'.',
+        text: 'Overall engagement for ' + name+'.',
       },
       legend: {
         display: true,
@@ -318,7 +221,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   const lineChartData = {
     labels: engagementPerYear.map(item => item.year),
     datasets: [{
-      label: selectedQuestionnaire + ' engagement over time',
+      label: ' engagement over time',
       data: engagementPerYear.map(item => item.engagement),
       // fill: false,
       backgroundColor: 'blue',
@@ -357,9 +260,8 @@ const PatientSearch = ({ patientNamesandIDs }) => {
               type="text"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              placeholder="Search patients"
+              placeholder="Search Carers"
             />
-            {/* <input type="text" id="last-name" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} /> */}
           </form>
         </div>
         <ul className='patient-list'>
@@ -385,19 +287,6 @@ const PatientSearch = ({ patientNamesandIDs }) => {
       <div className='responses'>
         <h2>{name}</h2>
         <div className='filters'>
-          <div className='questionaireFilter'>
-            <label htmlFor="questionnaireSelect">Questionnaire: </label>
-            <select id="questionnaireSelect" value={selectedQuestionnaire} onChange={e => setSelectedQuestionnaire(e.target.value)}>
-              <option value="">All questionnaires</option>
-              <option value="MCSI">MCSI</option>
-              <option value="Zarit-12">Zarit-12</option>
-              <option value="ALS-FRS-R">ALS-FRS-R</option>
-              <option value="Weight">Weight</option>
-              <option value="Speech and Swallow">Speech and Swallow</option>
-              <option value="Carer Support">Carer Support</option>
-
-            </select>
-          </div>
           <form id="dateRangeForm">
             <label htmlFor="start">Start date: </label>
             <input type="date" id="start" name="start" value={startDate} onChange={e => setStartDate(e.target.value)} />
@@ -411,7 +300,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
         </button>
         {areChartsVisible && (
           <div className='charts-and-title'>
-            <h3>{name}'s {selectedQuestionnaire} Charts</h3>
+            <h3>{name}'s Charts</h3>
             <div className='charts'>
               <div className="doughnut-chart">
                 <Doughnut data={doughnughtChartData} options={doughnutChartOptions} />
@@ -420,7 +309,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
                 <Line data={lineChartData} options={lineChartOptions} />          
               </div>
             </div>
-            <p> {name} has received a total of {total} {selectedQuestionnaire} questionaires {startDate && endDate && `from ${startDate} to ${endDate}`} and has responded to {scored} ({percentageScored}%)  of them.</p>
+            <p> {name} has received a total of {total} questionaires {startDate && endDate && `from ${startDate} to ${endDate}`} and has responded to {completed} ({percentageCompleted}%)  of them.</p>
           </div>
         )}
         <div id="response-container" className="response-container" dangerouslySetInnerHTML={{ __html: responseContainer }}></div>
@@ -429,4 +318,4 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   );
 };
 
-export default PatientSearch;
+export default CarerSearch;

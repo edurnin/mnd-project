@@ -1,25 +1,50 @@
 .container {
 display: flex;
 justify-content: space-between;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+margin: 20px;
+border-radius: 5px; 
+padding: 20px;
 }
 
 .search {
-  border: 1px solid black;
-  padding: 10px;
+  height:10px;
+  margin-bottom: 20px;
 }
 
 .searchAndNames{
-width: 30%;
-overflow-y: auto;
+width: 20%;
+/* overflow-y: auto; */
 }
 
 .responses {
   float: right;
-  width: 65%; 
+  width: 75%; 
 }
 
-.highlight {
+.scores{
+  margin-right:50px;
+  margin-left: 50px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.response-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: large;
+}
+
+.highlight-red {
   color: red;
+}
+
+
+.highlight-green {
+  color: green;
 }
 
 .filters {
@@ -45,70 +70,73 @@ overflow-y: auto;
   margin: 5px;
 }
 
-/* 
-#response-container {
-    float: right;
-    width: 55%; 
-    /* text-align: right;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    margin-bottom: 20px; 
-} */
-
 /* Response item styling */
 .response {
-    display: inline-block; /* Adjust container width based on content */
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    background-color: #fff;
-    font-size: 0.9em;
-    margin-right: 10px; /* Add some margin between response items */
-    margin-bottom: 10px; /* Add some margin between response items */
+  display: inline-block; /* Adjust container width based on content */
+  padding: 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px; 
+  background-color: #fff;
+  font-size: 0.9em;
+  margin-right: 30px;
+  margin-left: 30px;
+  margin-top: 30px;
 }
 .response-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(1000px, 1fr)); /* Adjust the 200px to fit your needs */
-  grid-gap: 10px; /* Adjust the grid-gap to fit your needs */
+  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); 
+  grid-gap: 0px; 
 }
 
 .response p {
-    margin: 3px 0;
+  margin: 3px 0;
 }
 
 .response ul {
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .response ul li {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 
 /* Additional styling  */
 h2 {
-    font-size: 1.2em;
-    color: #333;
+  font-size: 1.2em;
+  color: #333;
 }
 
 strong {
-    color: #007bff;
+  color: #007bff;
 }
+
+
+blue {
+  color: #007bff;
+}
+
 
 
 table {
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   width: 100%;
-  border: 1px solid black; /* Add border to the table */
+  border: 1px solid gray; /* Add border to the table */
+  border-radius: 5px; 
 }
 
+.patients-names {
+  border-collapse: collapse;
+  border-radius: 0px; 
+  margin: 0px;
+}
+/* 
 table th {
-  border: 1px solid black; /* Add border to table cells */
+  border: 1px solid black; 
+  border-radius: 5px; 
   padding: 8px;
   text-align: left;
-}
+} */
 
 table td {
     padding: 8px;
@@ -121,8 +149,33 @@ table th {
 
 .patient-name {
     cursor: pointer;
-  }
+}
 
 .table-cell:hover {
 background-color: #ddd; /* Change this to your preferred color */
+}
+
+.charts-and-title {
+  padding: 10px;
+  margin: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px; /* optional, for rounded corners */
+}
+
+.charts {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px;
+}
+
+.line-chart {
+  height: 300px; 
+  width: 500px;
+}
+
+.doughnut-chart {
+  height: 250px; 
+  width: 250px;
+  float: right;
+  margin-right: 30px;
 }

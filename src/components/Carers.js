@@ -1,8 +1,8 @@
 import './Home.css';
-import PatientSearch from './PatientSearch';
+import CarerSearch from './CarerSearch';
 import React, { useState, useEffect } from 'react';
 
-const Home = () => {
+const Carers = () => {
   const [patientNamesandIDs, setPatients] = useState([]);
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const Home = () => {
     <div>
       <ul>
       <h1>Home</h1>
-      <PatientSearch patientNamesandIDs={patientNamesandIDs} />
+      <CarerSearch patientNamesandIDs={patientNamesandIDs} />
       </ul>
     </div>
   );
 };
 
-export default Home;
+export default Carers;
