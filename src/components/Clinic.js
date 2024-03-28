@@ -1,5 +1,5 @@
 import './Home.css';
-import PatientSearch from './PatientSearch';
+import ClinicSearch from './ClinicSearch';
 import React, { useState, useEffect } from 'react';
 
 const Clinic = () => {
@@ -30,7 +30,7 @@ const Clinic = () => {
       <div>
         <ul>
         <h1>Clinic</h1>
-        <PatientSearch patientNamesandIDs={patientNamesandIDs} />
+        <ClinicSearch patientNamesandIDs={patientNamesandIDs} />
         </ul>
       </div>
     );

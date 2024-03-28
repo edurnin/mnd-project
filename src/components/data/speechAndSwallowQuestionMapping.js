@@ -1,10 +1,10 @@
 const speechAndSwallowQuestionMapping = [
-    ['speechAndSwallow Q1 Option 1', 'speechAndSwallow Q1 Option 2'], // Question 1 options
-    ['speechAndSwallow Q2 Option 1', 'speechAndSwallow Q2 Option 2', 'speechAndSwallow Q2 Option 3', 'speechAndSwallow Q2 Option 4', 'speechAndSwallow Q2 Option 5'],  // Question 2 options
-    ['speechAndSwallow Q3 Option 1', 'speechAndSwallow Q3 Option 2', 'speechAndSwallow Q3 Option 3', 'speechAndSwallow Q3 Option 4', 'speechAndSwallow Q3 Option 5'],  // Question 2 options
-    ['speechAndSwallow Q4 Option 1', 'speechAndSwallow Q4 Option 2'],  // Question 2 options
-    ['speechAndSwallow Q5 Option 1', 'speechAndSwallow Q5 Option 2', 'speechAndSwallow Q5 Option 3', 'speechAndSwallow Q5 Option 4', 'speechAndSwallow Q5 Option 5'],  // Question 2 options
-    ['speechAndSwallow Q6 Option 1', 'speechAndSwallow Q6 Option 2']  // Question 2 options
+    ['Do you have problems with your speech?', 'Yes I have some problems with my speech', 'No I have no problems with my speech'], // Question 1 options
+    ['Can you tell us some more about any concerns with your speech?', 'There are minor changes in my speech but I am not worried about it', 'My speech is less clear and I have been given advice that is helping', 'My speech is less clear or has recently gotten worse and I would like advice about it', 'My speech is now much less clear and I think I need a communication aid','I do not have useful speech and need other ways to communicate'],  // Question 2 options
+    ['Can you tell us some more about your access to/use of communication aids', 'I would like advice on options for communication aids', 'I have been referred to a specialist centre and am waiting for an appointment', 'A device has been recommended/ordered for me and I am waiting to receive it', 'I have a communication aid/device but do not use it very much','I have a communication aid/device and use it a lot/all the time'],  // Question 2 options
+    ['Do you have problems with your swallow?', 'Yes','no'],  // Question 2 options
+    ['Can you tell us some more about any concerns with your swallow?', 'I have difficulty with swallowing tablets only', 'Some foods or drinks are harder to swallow and I have not had any advice to date', 'Some foods or drinks are harder to swallow, but I have been given advice that is working well', 'I was given advice before, but now I feel the problem is worse and I would like a review', 'It feels very uncomfortable or I feel nervous when eating or drinking and as a result, I am having much less food or drink than usual'],  // Question 2 options
+    ['Do you want to tell us any more about any issues you are having with speech and swallow?', 'No','Yes - free text'],  // Question 2 options
 ];
 
 export default speechAndSwallowQuestionMapping;
