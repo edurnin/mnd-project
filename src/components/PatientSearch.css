@@ -70,9 +70,8 @@ width: 20%;
   margin: 5px;
 }
 
-/* Response item styling */
 .response {
-  display: inline-block; /* Adjust container width based on content */
+  display: inline-block; 
   padding: 8px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 5px; 
@@ -101,7 +100,6 @@ width: 20%;
 }
 
 
-/* Additional styling  */
 h2 {
   font-size: 1.2em;
   color: #333;
@@ -117,11 +115,9 @@ blue {
 }
 
 
-
 table {
-  /* border-collapse: collapse; */
   width: 100%;
-  border: 1px solid gray; /* Add border to the table */
+  border: 1px solid gray; 
   border-radius: 5px; 
 }
 
@@ -130,13 +126,6 @@ table {
   border-radius: 0px; 
   margin: 0px;
 }
-/* 
-table th {
-  border: 1px solid black; 
-  border-radius: 5px; 
-  padding: 8px;
-  text-align: left;
-} */
 
 table td {
     padding: 8px;
@@ -152,14 +141,14 @@ table th {
 }
 
 .table-cell:hover {
-background-color: #ddd; /* Change this to your preferred color */
+background-color: #ddd; 
 }
 
 .charts-and-title {
   padding: 10px;
   margin: 30px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 5px; /* optional, for rounded corners */
+  border-radius: 5px; 
 }
 
 .charts {

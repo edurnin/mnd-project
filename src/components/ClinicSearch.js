@@ -1,11 +1,11 @@
 // components/PatientSearch.js
 
 import React, { useState, useEffect } from 'react';
-import alsfrsrQuestionMapping from './data/alsfrsrQuestionMapping'; // Import Zarit question mapping array
-import weightQuestionMapping from './data/weightQuestionMapping'; // Import Zarit question mapping array
-import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; // Import Zarit question mapping array
-import snaqQuestionMapping from './data/snaqQuestionMapping'; // Import Zarit question mapping array
-import carerQuestionMapping from './data/carerQuestionMapping'; // Import Zarit question mapping array
+import alsfrsrQuestionMapping from './data/alsfrsrQuestionMapping'; 
+import weightQuestionMapping from './data/weightQuestionMapping';
+import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; 
+import snaqQuestionMapping from './data/snaqQuestionMapping';
+import carerQuestionMapping from './data/carerQuestionMapping'; 
 import './ClinicSearch.css';
 import { Chart } from 'chart.js';
 import { ArcElement, CategoryScale, Decimation, Filler, Legend, Title, Tooltip, LinearScale, PointElement, LineElement } from 'chart.js';
@@ -16,12 +16,9 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
   const [responseContainer, setResponseContainer] = useState('');
   const [patientId, setPatientId] = useState('');
   const [name, setPatientName] = useState('');
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
 
   const [selectedQuestionnaire, setSelectedQuestionnaire] = useState('ALS-FRS-R'); // New state variable for selected questionnaire
   const [searchTerm, setSearchTerm] = useState(''); // New state variable for search term
-  // const [patientResponses, setPatientResponses] = useState([]);
 
 
 
@@ -152,7 +149,6 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
             return {
               question: (index + 1) + ': ' + question,
               answer: `<span class="${answerClass}">${description ? description  : 'n/a'}</span>`,
-              // previousAnswer: previousDescription ? previousDescription  : 'n/a',
               answerClass,
               nextResponse,
               score,
@@ -203,7 +199,6 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
           }, 0);
 
           const armsScore = questionDescriptions.slice(3, 7).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
             if (typeof score === 'number') {
               return total + score;
             }
@@ -211,7 +206,6 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
           }, 0);
 
           const legsScore = questionDescriptions.slice(7, 10).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
             if (typeof score === 'number') {
               return total + score;
             }
@@ -219,7 +213,6 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
           }, 0);
 
           const respScore = questionDescriptions.slice(10, 14).reduce((total, {score}) => {
-            // const { score } = questionDescriptions[index];
             if (typeof score === 'number') {
               return total + score;
             }
@@ -282,7 +275,6 @@ const ClinicSearch = ({ patientNamesandIDs }) => {
               onChange={e => setSearchTerm(e.target.value)}
               placeholder="Search patients"
             />
-            {/* <input type="text" id="last-name" placeholder="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} /> */}
           </form>
         </div>
         <ul className='patient-list'>

@@ -1,7 +1,7 @@
 .navbar {
     display: flex;
-    justify-content: space-between; /* Distribute items along the main axis */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between; 
+    align-items: center; 
     background-color: black;
     color: white;
     padding: 10px 20px; /* Adjust padding */
@@ -20,16 +20,16 @@
   
   .navbar li {
     display: inline-block;
-    margin-right: 10px; /* Add spacing between buttons */
+    margin-right: 10px; 
   }
   
   .navbar li:last-child {
-    margin-right: 0; /* Remove margin from the last button */
+    margin-right: 0; 
   }
   
   .navbar li a {
     display: block;
-    padding: 10px 20px; /* Adjust padding to give the buttons a size */
+    padding: 10px 20px; 
     text-decoration: none;
     color: white;
     background-color: transparent;

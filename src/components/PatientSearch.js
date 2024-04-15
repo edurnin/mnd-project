@@ -1,11 +1,11 @@
 // components/PatientSearch.js
 
 import React, { useState, useEffect } from 'react';
-import alsfrsrQuestionMapping from './data/alsfrsrQuestionMapping'; // Import Zarit question mapping array
-import weightQuestionMapping from './data/weightQuestionMapping'; // Import Zarit question mapping array
-import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; // Import Zarit question mapping array
-import snaqQuestionMapping from './data/snaqQuestionMapping'; // Import Zarit question mapping array
-import carerQuestionMapping from './data/carerQuestionMapping'; // Import Zarit question mapping array
+import alsfrsrQuestionMapping from './data/alsfrsrQuestionMapping'; 
+import weightQuestionMapping from './data/weightQuestionMapping'; 
+import speechAndSwallowQuestionMapping from './data/speechAndSwallowQuestionMapping'; 
+import snaqQuestionMapping from './data/snaqQuestionMapping'; 
+import carerQuestionMapping from './data/carerQuestionMapping'; 
 import './PatientSearch.css';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart } from 'chart.js';
@@ -17,13 +17,10 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   const [responseContainer, setResponseContainer] = useState('');
   const [patientId, setPatientId] = useState('');
   const [name, setPatientName] = useState('');
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [selectedQuestionnaire, setSelectedQuestionnaire] = useState(''); // New state variable for selected questionnaire
-  const [searchTerm, setSearchTerm] = useState(''); // New state variable for search term
-  // const [patientResponses, setPatientResponses] = useState([]);
+  const [selectedQuestionnaire, setSelectedQuestionnaire] = useState(''); 
+  const [searchTerm, setSearchTerm] = useState('');
   const [percentageScored, setPercentageScored] = useState(0);
   const [engagementPerYear, setEngagementPerYear] = useState([]);
   const [areChartsVisible, setChartsVisible] = useState(false);
@@ -36,8 +33,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     setPatientId(patient.ID);
     setPatientName(`${patient["First Name"]} ${patient["Last Name"]}`)
     setChartsVisible(true);
-    // displayPatientInfo(name, patient.ID);
-    // fetchQuestionnaireResponses(patient.ID, selectedQuestionnaire); // Pass selected questionnaire type to fetch function
+    
   };
 
   useEffect(() => {
@@ -47,7 +43,7 @@ const PatientSearch = ({ patientNamesandIDs }) => {
     if (patientId) {
       fetchQuestionnaireResponses(patientId, selectedQuestionnaire);
     }
-  }, [selectedQuestionnaire, patientId, startDate, endDate, name,percentageScored]); // Add selectedQuestionnaire and patientId as dependencies
+  }, [selectedQuestionnaire, patientId, startDate, endDate, name,percentageScored]); // Add dependencies
 
 
   const countScoredQuestionnaires = (responses) => {
@@ -116,10 +112,6 @@ const PatientSearch = ({ patientNamesandIDs }) => {
   };
 
   const displayPatientResponses = (data) => {
-    // console.log(name);
-    // console.log(`Percentage of scored questionnaires: ${percentageScored}%`);
-
-    // setResponseContainer(`<h2>Responses for <blue> ${name}</blue> </h2>` + (selectedQuestionnaire ? `<h3>Questionnaire: <blue>${selectedQuestionnaire}</blue></h3>` : '') + percentageScored + `% of ${selectedQuestionnaire} questionnaires scored` + '<br>'+ '<br>');
     let responseContent = '';
 
     if (data.length === 0) {
